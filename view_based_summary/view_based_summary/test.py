@@ -22,8 +22,17 @@ class SummaryViewTestCase(TestCase):
             start_timestamp=26,
             completion_timestamp=27,
         )
-        self.expected_sum = 10
 
     def test_class_based_view_cache_sanity(self):
         resp = self.client.get(reverse('summary', kwargs={'user': 1}))
         self.assertEqual(resp.content, '10')
+
+    def test_class_based_view_updates(self):
+        ContentInteractionLog.objects.create(
+            user=1,
+            start_timestamp=40,
+            completion_timestamp=50,
+        )
+        resp = self.client.get(reverse('summary', kwargs={'user': 1}))
+        self.assertEqual(resp.content, '20')
+
