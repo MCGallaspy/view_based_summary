@@ -20,3 +20,14 @@ invalidation is our imagination.
 
 One potential issue is with syncing -- if summary logs are very expensive to compute, we may wish to sync their
 results between machines, by stashing the result in the db. Using view-based caches doesn't preclude that.
+
+When to invalidate the cache
+----------------------------
+
+It's probably not very useful to invalidate the cache every time a model is saved. For instance with video logs
+or exercise logs, many new models may be created in a short time span. In that case we can invalidate the cache
+after new models have stopped arriving. The things to consider are:
+
+* How much lag can we tolerate in updating the summaries? (1 sec? 1 min? 1 hour?)
+* How expensive is it to re-calculate the cached value?
+* How frequently is the value accessed?
