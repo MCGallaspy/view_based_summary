@@ -20,5 +20,5 @@ from views import SummaryView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^summary/', SummaryView.as_view()),
+    url(r'^summary/(?P<user>[0-9]+)', SummaryView.as_view(), name='summary'),
 ]
