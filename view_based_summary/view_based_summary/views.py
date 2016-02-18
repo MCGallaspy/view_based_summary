@@ -1,3 +1,5 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.views.generic import View
 from django.http import HttpResponse
 
@@ -21,3 +23,13 @@ def summary_view_helper(user):
         total += cl.completion_timestamp - cl.start_timestamp
 
     return total
+
+
+@receiver(post_save, sender=ContentInteractionLog)
+def invalidate_cache(*args, **kwargs):
+    """
+        Depending on the cache used, we could implement more granular cache invalidation.
+        This signal can also inspect the instance being saved in the kwargs:
+        https://docs.djangoproject.com/en/1.9/ref/signals/#post-save
+    """
+    summary_view_helper.cache_clear()
