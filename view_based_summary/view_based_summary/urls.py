@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from views import SummaryView
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^summary/', SummaryView.as_view()),
 ]
